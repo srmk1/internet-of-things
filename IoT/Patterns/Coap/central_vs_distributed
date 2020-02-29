@@ -1,0 +1,37 @@
+IoT Network architecture - Centalised v/s distributed:
+
+Lights - Ceiling switch - Access switch - Distribution switch --- Network --- Distribution switch - Controller
+
+Assuming lights would be running coap server(or MQTT servers), what should be architecture for running coap clients?
+Clients could be running on centralized controller and directly talking to servers on running on the devices. This is kind of
+centralised architecture. Alternatively, the intermediate switches could run coap clients and store information locally. Controller
+could talk to these switches and collect the data. We need to explre what are the advantages and dis-advantages of each of these
+approaches.
+
+------------------------------------------------------------------------------------------------------------------------------
+DEVICE DISCOVERY: 
+One of the important aspect of centralized architecture is DEVICE & SERVICE DISCOVERY. Coap supports multicast based 
+device discovery technique which can span across subnets using IGMPv3 (224.0.1.187). Messages sent to 244.0.1.187 by Coap servers
+have TTL=1 and hence it will be sent only Coap endpoints registered in that subnet. Coap Proxies have to be installed in the network 
+which forwards these entries towards the controller (this is the reason why we did Coap proxy on 3850??)
+https://tools.ietf.org/html/draft-brandt-coap-subnet-discovery-00
+
+SINGLE POINT FAILURE - RELIABILITY & REDUNDANCY: Since Controller is the SINGLE POINT of control plane,
+any FAILURE of controller will lead to single point failure. Reliability of the controller is of atmost importance (redundancy).
+
+EASE OF MANAGEMENT: Single point of management.
+
+SCALABILITY: Controller is directly talking to hundred of devices and hence need lot of processing power. For example:
+subscribe/publish model can periodical data sent by lot of devices which needs to be processed OR observe funtionality
+needs timer functionalities these might need lot of processing power (how about memory, disk, rom..etc). CPU, memory, network bandwidth
+could put a restriction on the scalability number supported in this architecture.
+
+NETWORK BANDWIDTH UTILIZATION: All the coap messages from devices is traversing all the way till network, so it might use
+more network bandwidth when compare to distributed model.
+
+EASE OF DEVELOPMENT: Centralized systems can be created really fast, development effort is need only at the controller.
+Network is just a pipe providing transport. When compared to distributed, where the resources directory is spread over mutliple
+places in network which needs protected agains failures. 
+
+SECURITY: Anything from security perspective.
+------------------------------------------------------------------------------------------------------------------------------

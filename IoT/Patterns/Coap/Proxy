@@ -1,0 +1,11 @@
+Why do we need proxy?
+RFC defines two primary reasons for using proxies:
+- When the request could not be otherwise made. Suppose application cannot talk coap, it can send http request to http to coap proxy. 
+  Http-to-coap proxy would map http requests to coap requests and Coap-to-Http in reverse direction
+- To service the response from a cache in order to reduce response time and network bandwidth or energy consumption.
+  An intermediate node can cache responses and respond to many servers.
+
+What are different types of proxies?
+RFC Defines 2 types of proxies:
+- Forward Proxy
+- Reverese Proxy
